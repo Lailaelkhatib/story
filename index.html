@@ -7,3 +7,40 @@
 <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
+
+<body class="locked">
+<div id="progress"></div>
+<audio id="bgm" src="assets/ambient.wav" loop></audio>
+
+
+<div id="gate">
+<div class="gate-box">
+<h1 id="gateTitle">Echoes of the Nile</h1>
+<p id="gateText">Best with sound. The river is about to speak.</p>
+<button class="btn" id="gateYes" onclick="enterSite(true)">Enter with sound</button>
+<button class="ghost" id="gateNo" onclick="enterSite(false)">Enter in silence</button>
+</div>
+</div>
+
+<div id="lantern"></div>
+
+<header id="header">
+  <div class="logo" onclick="goTo('home')">
+    <img src="assets/logo.png" alt="Logo">
+    <span>Echoes of the Nile</span>
+  </div>
+  <nav>
+    <a onclick="goTo('home')" id="navHome">Home</a>
+    <a onclick="goTo('about')" id="navAbout">About</a>
+    <a onclick="goTo('voyage')" id="navStory">Story</a>
+    <a onclick="goTo('footer')" id="navContact">Contact</a>
+  </nav>
+  <div class="tools">
+    <button id="musicBtn" onclick="toggleMusic()">Play music</button>
+    <button id="modeBtn">Light mode</button>
+    <button id="btnEn" onclick="setLang('en')" class="active">EN</button>
+    <button id="btnAr" onclick="setLang('ar')">عربي</button>
+  </div>
+</header>
+
+<main>
