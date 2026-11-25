@@ -10,7 +10,7 @@
 
 <body class="locked">
 <div id="progress"></div>
-<audio id="bgm" src="assets/ambient.wav" loop></audio>
+<audio id="bgm" src="echobrainz-the-egypt-637064.mp3" loop></audio>
 
 
 <div id="gate">
@@ -26,7 +26,7 @@
 
 <header id="header">
   <div class="logo" onclick="goTo('home')">
-    <img src="assets/logo.png" alt="Logo">
+    <img src="logo.png.png" alt="Logo">
     <span>Echoes of the Nile</span>
   </div>
   <nav>
@@ -46,7 +46,7 @@
 <main>
 
     <section id="home" class="hero">
-  <div class="hero-bg"><img id="heroBg" src="assets/scene1.jpg" alt="The Nile at dawn with pyramids"></div>
+  <div class="hero-bg"><img id="heroBg" src="scene1.jpg" alt="The Nile at dawn with pyramids"></div>
   <div class="veil2"></div>
   <div class="dust" id="dust"></div>
   <div class="hero-text" id="heroText">
@@ -66,7 +66,7 @@
     <div id="bgs"></div>
     <div class="veil"></div>
     <div id="chaps"></div>
-    <img id="cgif" class="cgif" src="assets/scarab.gif" alt="Animated character">
+    <img id="cgif" class="cgif" src="scarab.webp" alt="Animated character">
     <div class="dots" id="dots"></div>
     <button class="btn" id="sceneBtn" onclick="toggleMusic()">Play music</button>
   </div>
@@ -146,10 +146,447 @@
       <p class="lead" id="aboutText2">Each tale on this site has a short summary and a longer retelling, so you can read it in one minute or take your time with it.</p>
       <ul class="facts" id="aboutList"></ul>
     </div>
-    <div class="stack reveal"><img src="assets/osiris.png" alt="Osiris cover"><img src="assets/ra.png" alt="Ra cover"></div>
+    <div class="stack reveal"><img src="osiris.webp" alt="Osiris cover"><img src="ra.webp" alt="Ra cover"></div>
   </div>
 </section>
 
 </main>
+
+
+<footer class="foot" id="footer">
+  <div class="wave"></div>
+  <div class="word" id="fWord">Echoes of the Nile</div>
+  <div class="fgrid">
+    <div>
+      <h3 class="fh" id="fExplore">Explore</h3>
+      <a class="fl" onclick="goTo('home')" id="fHome">Home</a>
+      <a class="fl" onclick="goTo('voyage')" id="fStory">Story</a>
+      <a class="fl" onclick="goTo('about')" id="fAbout">About</a>
+      <a class="fl" onclick="goTo('footer')" id="fContact">Contact</a>
+    </div>
+    <div>
+      <h3 class="fh" id="fFollow">Follow us</h3>
+      <div class="socials">
+        <a href="https://instagram.com" target="_blank" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+        <a href="https://x.com" target="_blank" aria-label="X"><svg viewBox="0 0 24 24"><path d="M4 4l16 16M20 4L4 20"/></svg></a>
+        <a href="https://youtube.com" target="_blank" aria-label="YouTube"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3z"/></svg></a>
+      </div>
+      <p>hello@echoesofthenile.example<br>Cairo, Egypt</p>
+    </div>
+    <div class="news">
+      <h3 class="fh" id="newsHead">One new tale every month</h3>
+      <p id="newsText" style="margin:0">Join the newsletter and read it first.</p>
+      <div class="nrow">
+        <label for="newsEmail" style="position:absolute;left:-9999px">Email</label>
+        <input type="text" id="newsEmail" placeholder="you@example.com">
+        <button class="btn" id="newsBtn" onclick="subscribe()">Subscribe</button>
+      </div>
+      <p class="status" id="newsStatus" role="status"></p>
+    </div>
+  </div>
+  <div class="bottom"><span id="fRights">© 2026 Echoes of the Nile</span><button class="top" id="fTop" onclick="goTo('home')">Back to top</button></div>
+</footer>
+
+<script src="js/stories.js"></script>
+<script>
+
+    let lang = "en";
+let musicPlaying = false;
+let currentChapter = -1;
+
+let texts = [
+  { id: "navHome", en: "Home", ar: "الرئيسية" },
+  { id: "navAbout", en: "About", ar: "من نحن" },
+  { id: "navStory", en: "Story", ar: "الحكايات" },
+  { id: "navContact", en: "Contact", ar: "تواصل" },
+  { id: "modeBtn", en: "Light mode", ar: "الوضع الفاتح" },
+  { id: "heroTitle", en: "Echoes of the Nile", ar: "أصداء النيل" },
+  { id: "heroSub", en: "Whatever is told beside the river is never lost. Scroll down, and let the Nile tell you how.", ar: "كل ما يُحكى على ضفة النهر لا يضيع أبدًا. انزل للأسفل ودع النيل يخبرك كيف." },
+  { id: "heroBtn", en: "Hear the tale", ar: "اسمع الحكاية" },
+  { id: "gateTitle", en: "Echoes of the Nile", ar: "أصداء النيل" },
+  { id: "gateText", en: "Best with sound. The river is about to speak.", ar: "الأفضل مع الصوت. النهر على وشك أن يتكلم." },
+  { id: "gateYes", en: "Enter with sound", ar: "ادخل بالصوت" },
+  { id: "gateNo", en: "Enter in silence", ar: "ادخل بصمت" },
+  { id: "voyageTitle", en: "The journey north", ar: "الرحلة شمالًا" },
+  { id: "voyageText", en: "Scroll to sail from Aswan to the sea. Each stop carries a tale.", ar: "انزل لتبحر من أسوان إلى البحر. كل محطة تحمل حكاية." },
+  { id: "odoLabel", en: "km to the sea (about)", ar: "كم إلى البحر (تقريبًا)" },
+  { id: "machineTitle", en: "The echo machine", ar: "آلة الصدى" },
+  { id: "machineText", en: "Choose a motif to find the tales that share it, or hold the button to hear an echo.", ar: "اختر رمزًا لتجد الحكايات التي تشاركه، أو اضغط مطولًا لتسمع صدى." },
+  { id: "holdText", en: "Hold", ar: "اضغط مطولًا" },
+  { id: "surpriseBtn", en: "Surprise me", ar: "فاجئني" },
+  { id: "charsTitle", en: "Guardians of the stories", ar: "حرّاس الحكايات" },
+  { id: "factsTitle", en: "Did you know?", ar: "هل تعلم؟" },
+  { id: "factsText", en: "A few small facts about the river behind our stories.", ar: "بعض المعلومات الصغيرة عن النهر الذي تقف خلف حكاياتنا." },
+  { id: "aboutTitle", en: "What are the Echoes of the Nile?", ar: "ما هي أصداء النيل؟" },
+  { id: "aboutText", en: "An echo of the Nile is a story that keeps travelling: a myth or a memory from Egypt and the Mediterranean, told again and again until it reaches you.", ar: "صدى النيل هو حكاية لا تتوقف عن السفر: أسطورة أو ذكرى من مصر والبحر المتوسط، تُروى مرة بعد مرة حتى تصل إليك." },
+  { id: "aboutText2", en: "Each tale on this site has a short summary and a longer retelling, so you can read it in one minute or take your time with it.", ar: "لكل حكاية في هذا الموقع ملخص قصير وإعادة سرد أطول، لتقرأها في دقيقة أو تأخذ وقتك معها." },
+  { id: "fWord", en: "Echoes of the Nile", ar: "أصداء النيل" },
+  { id: "fExplore", en: "Explore", ar: "استكشف" },
+  { id: "fHome", en: "Home", ar: "الرئيسية" },
+  { id: "fStory", en: "Story", ar: "الحكايات" },
+  { id: "fAbout", en: "About", ar: "من نحن" },
+  { id: "fContact", en: "Contact", ar: "تواصل" },
+  { id: "fFollow", en: "Follow us", ar: "تابعنا" },
+  { id: "newsHead", en: "One new tale every month", ar: "حكاية جديدة كل شهر" },
+  { id: "newsText", en: "Join the newsletter and be the first to read it.", ar: "اشترك في النشرة وكن أول من يقرأها." },
+  { id: "newsBtn", en: "Subscribe", ar: "اشترك" },
+  { id: "fRights", en: "© 2026 Echoes of the Nile", ar: "© 2026 أصداء النيل" },
+  { id: "fTop", en: "Back to top", ar: "العودة للأعلى" }
+];
+
+let aboutPoints = [
+  { en: "Every tale is traditional and belongs to everyone.", ar: "كل حكاية تقليدية وملك للجميع." },
+  { en: "Read in English or Arabic and switch at any time.", ar: "اقرأ بالإنجليزية أو العربية وبدّل في أي وقت." },
+  { en: "New tales are added every month.", ar: "تُضاف حكايات جديدة كل شهر." }
+];
+
+
+function goTo(id) {
+  document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+}
+
+
+function makeDust() {
+  let html = "";
+  for (let i = 0; i < 30; i++) {
+    let left = Math.floor(Math.random() * 100);
+    let dx = Math.floor(Math.random() * 160) - 80;
+    let time = 6 + Math.floor(Math.random() * 10);
+    let delay = Math.floor(Math.random() * 10);
+    html += `<span style="left:${left}%; --dx:${dx}px; animation-duration:${time}s; animation-delay:${delay}s"></span>`;
+  }
+  document.getElementById("dust").innerHTML = html;
+}
+
+
+function makeMarquee() {
+  let html = "";
+  for (let r = 0; r < 4; r++) {
+    for (let i = 0; i < stories.length; i++) {
+      if (lang == "en") {
+        html += "<span>" + stories[i].titleEn + " ◆</span>";
+      } else {
+        html += "<span>" + stories[i].titleAr + " ◆</span>";
+      }
+    }
+  }
+  document.getElementById("track").innerHTML = html;
+}
+
+
+function buildStory() {
+  let bgs = "";
+  let chaps = "";
+  let dots = "";
+  for (let i = 0; i < chapters.length; i++) {
+    let title = chapters[i].titleEn;
+    let text = chapters[i].textEn;
+    if (lang == "ar") {
+      title = chapters[i].titleAr;
+      text = chapters[i].textAr;
+    }
+    bgs += `<img class="bg" id="bg${i}" src="${chapters[i].bg}" alt="">`;
+    chaps += `<div class="chap" id="chap${i}"><h2>${title}</h2><p>${text}</p></div>`;
+    dots += `<i id="dot${i}"></i>`;
+  }
+  document.getElementById("bgs").innerHTML = bgs;
+  document.getElementById("chaps").innerHTML = chaps;
+  document.getElementById("dots").innerHTML = dots;
+  currentChapter = -1;
+}
+
+function showChapter(n) {
+  for (let i = 0; i < chapters.length; i++) {
+    if (i == n) {
+      document.getElementById("bg" + i).classList.add("on");
+      document.getElementById("chap" + i).classList.add("on");
+      document.getElementById("dot" + i).classList.add("on");
+    } else {
+      document.getElementById("bg" + i).classList.remove("on");
+      document.getElementById("chap" + i).classList.remove("on");
+      document.getElementById("dot" + i).classList.remove("on");
+    }
+  }
+  
+  let gif = document.getElementById("cgif");
+  gif.classList.remove("on");
+  setTimeout(function () {
+    gif.src = chapters[n].gif;
+    gif.classList.add("on");
+  }, 350);
+}
+
+
+function showStories() {
+  let html = "";
+  for (let i = 0; i < stories.length; i++) {
+    let title = stories[i].titleEn;
+    let author = stories[i].authorEn;
+    let language = stories[i].languageEn;
+    let summary = stories[i].summaryEn;
+    let btn = "View details";
+    let by = "By";
+    if (lang == "ar") {
+      title = stories[i].titleAr;
+      author = stories[i].authorAr;
+      language = stories[i].languageAr;
+      summary = stories[i].summaryAr;
+      btn = "عرض التفاصيل";
+      by = "بقلم";
+    }
+    html += `
+      <div class="card vcard">
+        <div class="cvr"><img src="${stories[i].image}" alt="${title}"></div>
+        <div class="cb">
+          <h3>${title}</h3>
+          <p class="meta">${by}: ${author}</p>
+          <p class="meta">${language}</p>
+          <p>${summary}</p>
+          <button class="btn" onclick="showDetails(${i})">${btn}</button>
+        </div>
+      </div>`;
+  }
+  document.getElementById("vtrack").innerHTML = html;
+
+  // the names of the places on the river
+  let stops = "";
+  for (let i = 0; i < stories.length; i++) {
+    let place = stories[i].placeEn;
+    if (lang == "ar") { place = stories[i].placeAr; }
+    let left = 12 + i * 25;
+    stops += `<div class="stop" id="stop${i}" style="left:${left}%">${place}</div>`;
+  }
+  document.getElementById("stops").innerHTML = stops;
+}
+
+function showDetails(i) {
+  let box = document.getElementById("details");
+  let closeText = "Close";
+  if (lang == "en") {
+    box.innerHTML = `<h3>${stories[i].titleEn}</h3><p class="meta">${stories[i].placeEn} · ${stories[i].origin}</p><p>${stories[i].detailsEn}</p>`;
+  } else {
+    closeText = "إغلاق";
+    box.innerHTML = `<h3>${stories[i].titleAr}</h3><p class="meta">${stories[i].placeAr} · ${stories[i].origin}</p><p>${stories[i].detailsAr}</p>`;
+  }
+  box.innerHTML += `<button class="btn" onclick="hideDetails()">${closeText}</button>`;
+  box.style.display = "block";
+}
+
+function hideDetails() {
+  document.getElementById("details").style.display = "none";
+}
+
+
+function makeOdometer() {
+  let html = "";
+  for (let c = 0; c < 4; c++) {
+    html += '<div class="dg"><div id="col' + c + '">';
+    for (let d = 0; d < 10; d++) {
+      html += "<span>" + d + "</span>";
+    }
+    html += "</div></div>";
+  }
+  document.getElementById("odo").innerHTML = html;
+}
+
+function setOdometer(n) {
+  let text = String(n);
+  while (text.length < 4) {
+    text = "0" + text;
+  }
+  for (let c = 0; c < 4; c++) {
+    let digit = Number(text.charAt(c));
+    document.getElementById("col" + c).style.transform = "translateY(" + (-digit * 10) + "%)";
+  }
+}
+
+
+function showMotifs() {
+  let html = "";
+  for (let i = 0; i < motifs.length; i++) {
+    let name = motifs[i].en;
+    if (lang == "ar") { name = motifs[i].ar; }
+    html += `<button class="chip" id="chip${i}" onclick="chooseMotif(${i})">${name}</button>`;
+  }
+  document.getElementById("chips").innerHTML = html;
+  document.getElementById("motifResult").innerHTML = "";
+}
+
+function chooseMotif(n) {
+
+  for (let i = 0; i < motifs.length; i++) {
+    if (i == n) {
+      document.getElementById("chip" + i).classList.add("on");
+    } else {
+      document.getElementById("chip" + i).classList.remove("on");
+    }
+  }
+
+  let html = "";
+  for (let i = 0; i < stories.length; i++) {
+    for (let j = 0; j < stories[i].motifs.length; j++) {
+      if (stories[i].motifs[j] == motifs[n].key) {
+        let title = stories[i].titleEn;
+        if (lang == "ar") { title = stories[i].titleAr; }
+        html += `<a onclick="showDetails(${i})">${title}</a>`;
+      }
+    }
+  }
+  document.getElementById("motifResult").innerHTML = html;
+}
+
+function surprise() {
+  let n = Math.floor(Math.random() * stories.length);
+  showDetails(n);
+}
+
+
+let holdTimer;
+
+function startHold() {
+  document.getElementById("holdBtn").classList.add("holding");
+  holdTimer = setTimeout(showEcho, 1300);
+}
+
+function stopHold() {
+  document.getElementById("holdBtn").classList.remove("holding");
+  clearTimeout(holdTimer);
+}
+
+function showEcho() {
+  let n = Math.floor(Math.random() * echoes.length);
+  let text = echoes[n].en;
+  if (lang == "ar") { text = echoes[n].ar; }
+  let box = document.getElementById("echoBox");
+  box.innerHTML = "<p>" + text + "</p>";
+  box.classList.remove("show");
+  void box.offsetWidth;
+  box.classList.add("show");
+}
+
+
+function enterSite(withSound) {
+  document.getElementById("gate").className = "gone";
+  document.body.classList.remove("locked");
+  if (withSound == true && musicPlaying == false) {
+    toggleMusic();
+  }
+}
+
+
+document.addEventListener("mousemove", function (e) {
+  let lantern = document.getElementById("lantern");
+  lantern.style.left = e.clientX + "px";
+  lantern.style.top = e.clientY + "px";
+  lantern.style.opacity = 1;
+});
+
+
+function showCharacters() {
+  let html = "";
+  for (let i = 0; i < characters.length; i++) {
+    let name = characters[i].nameEn;
+    let text = characters[i].textEn;
+    if (lang == "ar") {
+      name = characters[i].nameAr;
+      text = characters[i].textAr;
+    }
+    html += `
+      <div class="char reveal" style="transition-delay:${i * 150}ms">
+        <div class="ring"><img src="${characters[i].gif}" alt="${name}"></div>
+        <b>${name}</b>
+        <p>${text}</p>
+      </div>`;
+  }
+  document.getElementById("charGrid").innerHTML = html;
+}
+
+
+function showFacts() {
+  let html = "";
+  for (let i = 0; i < facts.length; i++) {
+    let title = facts[i].titleEn;
+    let text = facts[i].textEn;
+    if (lang == "ar") {
+      title = facts[i].titleAr;
+      text = facts[i].textAr;
+    }
+    html += `
+      <div class="fact reveal" style="transition-delay:${i * 120}ms">
+        <h3>${title}</h3>
+        <p>${text}</p>
+      </div>`;
+  }
+  document.getElementById("factsGrid").innerHTML = html;
+}
+
+
+function showAbout() {
+  let html = "";
+  for (let i = 0; i < aboutPoints.length; i++) {
+    if (lang == "en") {
+      html += "<li>" + aboutPoints[i].en + "</li>";
+    } else {
+      html += "<li>" + aboutPoints[i].ar + "</li>";
+    }
+  }
+  document.getElementById("aboutList").innerHTML = html;
+}
+
+
+function setLang(l) {
+  lang = l;
+  if (l == "ar") {
+    document.body.dir = "rtl";
+    document.getElementById("btnAr").className = "active";
+    document.getElementById("btnEn").className = "";
+  } else {
+    document.body.dir = "ltr";
+    document.getElementById("btnEn").className = "active";
+    document.getElementById("btnAr").className = "";
+  }
+ 
+  for (let i = 0; i < texts.length; i++) {
+    if (l == "en") {
+      document.getElementById(texts[i].id).innerHTML = texts[i].en;
+    } else {
+      document.getElementById(texts[i].id).innerHTML = texts[i].ar;
+    }
+  }
+  hideDetails();
+  showStories();
+  showCharacters();
+  showFacts();
+  showAbout();
+  showMotifs();
+  makeMarquee();
+  buildStory();
+  updateMusicText();
+  onScroll();
+}
+
+
+function toggleMusic() {
+  let audio = document.getElementById("bgm");
+  if (musicPlaying == false) {
+    audio.play();
+    musicPlaying = true;
+  } else {
+    audio.pause();
+    musicPlaying = false;
+  }
+  updateMusicText();
+}
+
+function updateMusicText() {
+  let text = "";
+  if (lang == "en") {
+    if (musicPlaying) { text = "Stop music"; } else { text = "Play music"; }
+  } else {
+    if (musicPlaying) { text = "إيقاف الموسيقى"; } else { text = "تشغيل الموسيقى"; }
+  }
+  document.getElementById("musicBtn").innerHTML = text;
+  document.getElementById("sceneBtn").innerHTML = text;
+}
 
 
