@@ -590,3 +590,101 @@ function updateMusicText() {
 }
 
 
+function onScroll() {
+  let y = window.scrollY;
+  let total = document.documentElement.scrollHeight - window.innerHeight;
+
+  document.getElementById("progress").style.width = (y / total * 100) + "%";
+
+ 
+  if (y > 60) {
+    document.getElementById("header").className = "solid";
+  } else {
+    document.getElementById("header").className = "";
+  }
+
+  
+  document.getElementById("heroBg").style.transform = "translateY(" + (y * 0.3) + "px)";
+  document.getElementById("heroText").style.opacity = 1 - y / 550;
+
+  
+  let box = document.getElementById("story").getBoundingClientRect();
+  if (box.top < window.innerHeight && box.bottom > 0) {
+    let progress = -box.top / (box.height - window.innerHeight);
+    let n = Math.floor(progress * chapters.length);
+    if (n < 0) { n = 0; }
+    if (n > chapters.length - 1) { n = chapters.length - 1; }
+    if (n != currentChapter) {
+      currentChapter = n;
+      showChapter(n);
+    }
+  }
+
+ 
+  let v = document.getElementById("voyage").getBoundingClientRect();
+  if (v.top < window.innerHeight && v.bottom > 0) {
+    let p = -v.top / (v.height - window.innerHeight);
+    if (p < 0) { p = 0; }
+    if (p > 1) { p = 1; }
+    let track = document.getElementById("vtrack");
+    let move = track.scrollWidth - window.innerWidth + 80;
+    if (move < 0) { move = 0; }
+    track.style.transform = "translateX(" + (-p * move) + "px)";
+
+    let path = document.getElementById("riverPath");
+    let len = path.getTotalLength();
+    path.style.strokeDasharray = len;
+    path.style.strokeDashoffset = len * (1 - p);
+    let point = path.getPointAtLength(len * p);
+    document.getElementById("boat").setAttribute("transform", "translate(" + point.x + "," + point.y + ")");
+
+    setOdometer(Math.round(1100 * (1 - p)));
+
+    for (let i = 0; i < stories.length; i++) {
+      if (p * 100 >= 12 + i * 25 - 6) {
+        document.getElementById("stop" + i).classList.add("on");
+      } else {
+        document.getElementById("stop" + i).classList.remove("on");
+      }
+    }
+  }
+
+
+  let items = document.getElementsByClassName("reveal");
+  for (let i = 0; i < items.length; i++) {
+    let r = items[i].getBoundingClientRect();
+    if (r.top < window.innerHeight * 0.88 && r.bottom > window.innerHeight * 0.05) {
+      items[i].classList.add("in");
+    } else {
+      items[i].classList.remove("in");
+    }
+  }
+}
+window.addEventListener("scroll", onScroll);
+
+
+document.getElementById("modeBtn").addEventListener("click", () => {
+  document.body.classList.toggle("light-mode");
+});
+
+
+function subscribe() {
+  let email = document.getElementById("newsEmail").value;
+  let status = document.getElementById("newsStatus");
+  if (email == "") {
+    if (lang == "en") { status.innerHTML = "Please enter your email."; }
+    else { status.innerHTML = "من فضلك اكتب بريدك الإلكتروني."; }
+  } else {
+    if (lang == "en") { status.innerHTML = "You are subscribed."; }
+    else { status.innerHTML = "تم الاشتراك."; }
+    document.getElementById("newsEmail").value = "";
+  }
+}
+
+
+makeOdometer();
+makeDust();
+setLang("en");
+</script>
+</body>
+</html>
