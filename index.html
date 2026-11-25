@@ -44,3 +44,112 @@
 </header>
 
 <main>
+
+    <section id="home" class="hero">
+  <div class="hero-bg"><img id="heroBg" src="assets/scene1.jpg" alt="The Nile at dawn with pyramids"></div>
+  <div class="veil2"></div>
+  <div class="dust" id="dust"></div>
+  <div class="hero-text" id="heroText">
+    <h1 class="shimmer" id="heroTitle">Echoes of the Nile</h1>
+    <p id="heroSub">Whatever is told beside the river is never lost.</p>
+    <button class="btn" id="heroBtn" onclick="goTo('story')">Hear the tale</button>
+  </div>
+  <div class="hint"></div>
+</section>
+
+<div class="marquee"><div class="track" id="track"></div></div>
+
+
+
+<section id="story">
+  <div class="stage">
+    <div id="bgs"></div>
+    <div class="veil"></div>
+    <div id="chaps"></div>
+    <img id="cgif" class="cgif" src="assets/scarab.gif" alt="Animated character">
+    <div class="dots" id="dots"></div>
+    <button class="btn" id="sceneBtn" onclick="toggleMusic()">Play music</button>
+  </div>
+</section>
+
+
+<section id="voyage">
+  <div class="vstage">
+    <div class="vhead">
+      <div>
+        <h2 id="voyageTitle">The journey north</h2>
+        <p id="voyageText">Scroll to sail from Aswan to the sea. Each stop carries a tale.</p>
+      </div>
+      <div class="odo-box">
+        <div class="odo" id="odo"></div>
+        <span id="odoLabel">km to the sea (about)</span>
+      </div>
+    </div>
+    <div class="river-box">
+      <svg viewBox="0 0 1000 120" aria-hidden="true">
+        <path d="M0 80 C 120 20, 220 120, 340 70 S 560 10, 680 70 S 880 120, 1000 50" class="river-back"/>
+        <path id="riverPath" d="M0 80 C 120 20, 220 120, 340 70 S 560 10, 680 70 S 880 120, 1000 50" class="river-line"/>
+        <g id="boat"><path d="M-10 -4 L0 -26 L10 -4 Z" fill="#f3ecd8"/><path d="M-14 -3 L14 -3 L8 6 L-8 6 Z" fill="#d4a63a"/></g>
+      </svg>
+      <div id="stops"></div>
+    </div>
+    <div class="vtrack" id="vtrack"></div>
+  </div>
+</section>
+
+
+<div id="details"></div>
+
+
+<section id="machine" class="alt">
+  <div class="wrap">
+    <h2 class="reveal" id="machineTitle">The echo machine</h2>
+    <p class="lead reveal" id="machineText">Choose a motif to find the tales that share it, or hold the button to hear an echo.</p>
+    <div class="machine reveal">
+      <div>
+        <div class="chips" id="chips"></div>
+        <p class="result" id="motifResult"></p>
+        <button class="btn" id="surpriseBtn" onclick="surprise()">Surprise me</button>
+      </div>
+      <div class="hold-wrap">
+        <button class="hold" id="holdBtn" onmousedown="startHold()" onmouseup="stopHold()" onmouseleave="stopHold()" ontouchstart="startHold()" ontouchend="stopHold()">
+          <span class="fill"></span><span class="hold-text" id="holdText">Hold</span>
+        </button>
+        <div class="echo-box" id="echoBox"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="characters">
+  <div class="wrap">
+    <h2 class="reveal" id="charsTitle">Guardians of the stories</h2>
+    <div id="charGrid"></div>
+  </div>
+</section>
+
+
+<section id="facts" class="alt">
+  <div class="wrap">
+    <h2 class="reveal" id="factsTitle">Did you know?</h2>
+    <p class="lead reveal" id="factsText">A few small facts about the river behind our stories.</p>
+    <div class="facts-grid" id="factsGrid"></div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap about">
+    <div class="reveal">
+      <h2 id="aboutTitle">What are the Echoes of the Nile?</h2>
+      <p class="lead" id="aboutText">An echo of the Nile is a story that keeps travelling: a myth or a memory from Egypt and the Mediterranean, told again and again until it reaches you.</p>
+      <p class="lead" id="aboutText2">Each tale on this site has a short summary and a longer retelling, so you can read it in one minute or take your time with it.</p>
+      <ul class="facts" id="aboutList"></ul>
+    </div>
+    <div class="stack reveal"><img src="assets/osiris.png" alt="Osiris cover"><img src="assets/ra.png" alt="Ra cover"></div>
+  </div>
+</section>
+
+</main>
+
+
